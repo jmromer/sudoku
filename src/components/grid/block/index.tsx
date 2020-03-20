@@ -9,7 +9,9 @@ interface BlockProps {
 
 const Block: FC<BlockProps> = ({ row, col }) => {
     return (
-        <Container data-cy="block">{row}-{col}</Container>
+        <Container data-cy={`block-${row}-${col}`}>
+            __
+        </Container>
     )
 }
 
