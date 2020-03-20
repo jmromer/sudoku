@@ -1,25 +1,24 @@
 import React, { FC } from 'react'
 
-interface GridCallback { (element: any, index: number): any }
+import { Container, Row } from './styles'
+import Block from './block'
+
+interface GridCallback {
+    (element: any, index: number): any
+}
+
 const grid = (func: GridCallback) =>
     React.Children.toArray([...Array(9)].map(func))
 
 const Grid: FC = () => {
     return (
-        <div data-cy="grid-container">
-            {
-                grid((_, rowNum) => (
-                    <div data-cy="grid-row-container">
-                        {
-                            grid((_, colNum) => (
-                                <div data-cy="block">
-                                </div>
-                            ))
-                        }
-                    </div>
-                ))
-            }
-        </div>
+        <Container data-cy="grid-container">
+            {grid((_, rowNum) => (
+                <Row data-cy="grid-row-container">
+                    {grid((_, colNum) => <Block col={colNum} row={rowNum} />)}
+                </Row>
+            ))}
+        </Container>
     )
 }
 
