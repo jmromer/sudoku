@@ -7,10 +7,8 @@
  *
  * @return {Number} a random integer
  */
-export default function randomInt(bound1: number, bound2: number = null): number {
-    let [lb, ub] = bound2
-        ? [bound1, bound2]
-        : [0, bound1]
+export default function randomInt(bound1: number, bound2: number | null = null): number {
+    let [lb, ub] = (bound2) ? [bound1, bound2] : [0, bound1]
 
     if (ub <= lb) {
         throw new RangeError('lower bound must be less than upper bound.')
