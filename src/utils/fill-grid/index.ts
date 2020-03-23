@@ -8,6 +8,7 @@ import {
 } from 'typings'
 
 import shuffle from 'utils/shuffle'
+import equal from 'utils/equal'
 
 // Is the target value `value` in row `rowIndex` of grid `grid`?
 function isInRow(value: VALUE, grid: GRID, rowIndex: INDEX): boolean {
@@ -67,12 +68,6 @@ function isValidInPosition(value: VALUE, grid: GRID, rowIndex: INDEX, colIndex: 
         && !isInSubGrid(value, grid, rowIndex, colIndex)
 }
 
-// Are the given arrays equivalent by value?
-function equalArrays(arr1: VALUE[], arr2: VALUE[]): boolean {
-    return arr1.length === arr2.length
-        && arr1.every((value, index) => value === arr2[index])
-}
-
 /**
  * Is the given `grid` completely filled?
  *
@@ -98,18 +93,18 @@ export function isValidGrid(grid: GRID): boolean {
 
     for (let row of grid) {
         const rowEntries = row.slice(0).sort()
-        if (!equalArrays(rowEntries, completeEntries)) { return false }
+        if (!equal.arrays(rowEntries, completeEntries)) { return false }
     }
 
     for (let col = 0; col < SUDOKU_GRID_SIZE; col++) {
         let colEntries = [...Array(SUDOKU_GRID_SIZE)].map((_, row) => grid[row][col]).sort()
-        if (!equalArrays(colEntries, completeEntries)) { return false }
+        if (!equal.arrays(colEntries, completeEntries)) { return false }
     }
 
     const subgrids = allSubgridIndexes()
     for (let subgrid of subgrids) {
         let subgridEntries = subgrid.map(([row, col]) => grid[row][col]).sort()
-        if (!equalArrays(subgridEntries, completeEntries)) { return false }
+        if (!equal.arrays(subgridEntries, completeEntries)) { return false }
     }
 
     return true
