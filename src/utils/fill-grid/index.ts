@@ -1,14 +1,20 @@
-import { GRID, N, INDEX, COORD } from 'typings'
+import {
+    COORD,
+    GRID,
+    INDEX,
+    SUDOKU_GRID_SIZE,
+    VALUE
+} from 'typings'
 
 import shuffle from 'utils/shuffle'
 
 // Is the target value `value` in row `rowIndex` of grid `grid`?
-function isInRow(value: N, grid: GRID, rowIndex: INDEX): boolean {
+function isInRow(value: VALUE, grid: GRID, rowIndex: INDEX): boolean {
     return grid[rowIndex].includes(value)
 }
 
 // Is the value `value` in column `colIndex` of grid `grid`?
-function isInCol(value: N, grid: GRID, colIndex: INDEX): boolean {
+function isInCol(value: VALUE, grid: GRID, colIndex: INDEX): boolean {
     for (let row = 0; row < grid.length; row++) {
         if (grid[row][colIndex] === value) { return true }
     }
@@ -22,18 +28,24 @@ function subGridIndexes(row: INDEX, col: INDEX): COORD[] {
     const baseRow: INDEX = lowerBound(row)
     const baseCol: INDEX = lowerBound(col)
 
-    const indices =
-        [...Array(3)].map((_, i): COORD[] =>
-            [...Array(3)].map((_, j): COORD =>
-                [<INDEX>(baseRow + i), <INDEX>(baseCol + j)]
-            ))
+    const indices: COORD[][] =
+        [...Array(3)].map((_, i) =>
+            [...Array(3)].map((_, j) =>
+                [
+                    (baseRow + i) as INDEX,
+                    (baseCol + j) as INDEX,
+                ] as COORD
+            ) as COORD[])
 
-    return Array().concat(...indices)
+    const coords: COORD[] = []
+    coords.concat(...indices)
+
+    return coords
 }
 
 // Is the target value `target` in the neighborhood of
 // [`rowIndex`, `colIndex`] (i.e., in its enclosing sub-grid) of grid `grid`?
-function isInSubGrid(value: N, grid: GRID, rowIndex: INDEX, colIndex: INDEX): boolean {
+function isInSubGrid(value: VALUE, grid: GRID, rowIndex: INDEX, colIndex: INDEX): boolean {
     const coords = subGridIndexes(rowIndex, colIndex)
 
     for (let [row, col] of coords) {
@@ -47,7 +59,7 @@ function isInSubGrid(value: N, grid: GRID, rowIndex: INDEX, colIndex: INDEX): bo
 
 
 // Is the given `grid` completely filled?
-function isValidInPosition(value: N, grid: GRID, rowIndex: INDEX, colIndex: INDEX): boolean {
+function isValidInPosition(value: VALUE, grid: GRID, rowIndex: INDEX, colIndex: INDEX): boolean {
     return !isInRow(value, grid, rowIndex)
         && !isInCol(value, grid, colIndex)
         && !isInSubGrid(value, grid, rowIndex, colIndex)
@@ -60,7 +72,8 @@ function isValidInPosition(value: N, grid: GRID, rowIndex: INDEX, colIndex: INDE
  * @returns {Boolean} true if the grid is filled
  */
 export function isFullGrid(grid: GRID): boolean {
-    return !Array().concat(...grid).includes(0)
+    const values: VALUE[] = []
+    return !values.concat(...grid).includes(0)
 }
 
 /**
@@ -70,15 +83,13 @@ export function isFullGrid(grid: GRID): boolean {
  * @returns {Boolean} true if a valid placement has been made, else false
  */
 export default function fillGrid(grid: GRID): boolean {
-    const values: NUMBERS[] = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    const size = 9
+    const values: VALUE[] = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+    let row: INDEX = 0
+    let col: INDEX = 0
 
-    let row = 0
-    let col = 0
-
-    for (let i = 0; i < size ** 2; i++) {
-        row = Math.floor(i / size)
-        col = i % size
+    for (let i = 0; i < SUDOKU_GRID_SIZE ** 2; i++) {
+        row = Math.floor(i / SUDOKU_GRID_SIZE) as INDEX
+        col = i % SUDOKU_GRID_SIZE as INDEX
 
         // Skip if the position is filled already
         if (grid[row][col] !== 0) { continue }

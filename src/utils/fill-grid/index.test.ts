@@ -5,7 +5,7 @@ const emptyGrid = () => [...Array(9)].map(() => [...Array(9)].map(() => 0))
 describe('.fillGrid', () => {
     it('fills an empty grid', () => {
         const grid = emptyGrid()
-        expect(new Set(Array().concat(...grid))).toEqual(new Set([0]))
+        expect(new Set([].concat(...grid))).toEqual(new Set([0]))
 
         fillGrid(grid)
 
