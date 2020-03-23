@@ -1,4 +1,4 @@
-import fillGrid, { isFullGrid } from './'
+import fillGrid, { isValidGrid } from './'
 
 const emptyGrid = () => [...Array(9)].map(() => [...Array(9)].map(() => 0))
 
@@ -9,7 +9,7 @@ describe('.fillGrid', () => {
 
         fillGrid(grid)
 
-        expect(isFullGrid(grid)).toEqual(true)
+        expect(isValidGrid(grid)).toEqual(true)
     })
 
     it('fills a non-empty grid', () => {
@@ -19,6 +19,6 @@ describe('.fillGrid', () => {
 
         fillGrid(grid)
 
-        expect(isFullGrid(grid)).toEqual(true)
+        expect(isValidGrid(grid)).toEqual(true)
     })
 })

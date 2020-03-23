@@ -43,6 +43,22 @@ function subGridIndexes(row: INDEX, col: INDEX): COORD[] {
     return coords
 }
 
+function allSubgridIndexes(): COORD[][] {
+    const baseCoords: COORD[] = [
+        [0, 0], [0, 3], [0, 6],
+        [3, 0], [3, 3], [3, 6],
+        [6, 0], [6, 3], [6, 6],
+    ] as COORD[]
+
+    const indices: COORD[][] = baseCoords.map(([row, col]) => [
+        [row + 0, col + 0], [row + 0, col + 1], [row + 0, col + 2],
+        [row + 1, col + 0], [row + 1, col + 1], [row + 1, col + 2],
+        [row + 2, col + 0], [row + 2, col + 1], [row + 2, col + 2],
+    ]) as COORD[][]
+
+    return indices
+}
+
 // Is the target value `target` in the neighborhood of
 // [`rowIndex`, `colIndex`] (i.e., in its enclosing sub-grid) of grid `grid`?
 function isInSubGrid(value: VALUE, grid: GRID, rowIndex: INDEX, colIndex: INDEX): boolean {
@@ -65,6 +81,11 @@ function isValidInPosition(value: VALUE, grid: GRID, rowIndex: INDEX, colIndex: 
         && !isInSubGrid(value, grid, rowIndex, colIndex)
 }
 
+function equalArrays(arr1: VALUE[], arr2: VALUE[]): boolean {
+    return arr1.length === arr2.length
+        && arr1.every((value, index) => value === arr2[index])
+}
+
 /**
  * Is the given `grid` completely filled?
  *
@@ -74,6 +95,37 @@ function isValidInPosition(value: VALUE, grid: GRID, rowIndex: INDEX, colIndex: 
 export function isFullGrid(grid: GRID): boolean {
     const values: VALUE[] = []
     return !values.concat(...grid).includes(0)
+}
+
+/**
+ * Is the given `grid` validly filled?
+ *
+ * @param {GRID} grid - a 9 x 9 sudoku grid
+ * @returns {Boolean} true if the grid is valid
+ */
+export function isValidGrid(grid: GRID): boolean {
+    if (!isFullGrid(grid)) { return false }
+
+    const completeEntries: VALUE[] =
+        [...Array(SUDOKU_GRID_SIZE)].map((_, i) => i + 1 as VALUE)
+
+    for (let row of grid) {
+        const rowEntries = row.slice(0).sort()
+        if (!equalArrays(rowEntries, completeEntries)) { return false }
+    }
+
+    for (let col = 0; col < SUDOKU_GRID_SIZE; col++) {
+        let colEntries = [...Array(SUDOKU_GRID_SIZE)].map((_, row) => grid[row][col]).sort()
+        if (!equalArrays(colEntries, completeEntries)) { return false }
+    }
+
+    const subgrids = allSubgridIndexes()
+    for (let subgrid of subgrids) {
+        let subgridEntries = subgrid.map(([row, col]) => grid[row][col]).sort()
+        if (!equalArrays(subgridEntries, completeEntries)) { return false }
+    }
+
+    return true
 }
 
 /**
