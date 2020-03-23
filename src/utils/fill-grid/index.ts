@@ -7,8 +7,7 @@ import {
     VALUE
 } from 'typings'
 
-import shuffle from 'utils/shuffle'
-import equal from 'utils/equal'
+import { shuffle, equal } from 'utils'
 
 // Is the target value `value` in row `rowIndex` of grid `grid`?
 function isInRow(value: VALUE, grid: GRID, rowIndex: INDEX): boolean {
