@@ -1,5 +1,3 @@
-export const SUDOKU_GRID_SIZE = 9
-
 // Valid sudoku values
 export type VALID_VALUE = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
 

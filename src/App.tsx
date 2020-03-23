@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
 import { ThemeProvider } from 'styled-components'
 
-import { Content, Title, Card, Grid } from './components'
-import { GlobalStyles, theme } from './styles'
+import { Content, Title, Card, Grid } from 'components'
+import { GlobalStyles, theme } from 'styles'
 
 // NB: <> is shorthand for <Fragment>
 const App: FC = () => (

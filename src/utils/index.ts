@@ -1,4 +1,9 @@
-export { default as FillGrid } from './fill-grid'
-export { default as randomInt } from './random-int'
-export { default as shuffle } from './shuffle'
-export { default as equal } from './equal'
+import array from './array'
+import sudoku from './sudoku'
+import random from './random'
+
+export default {
+    array,
+    sudoku,
+    random
+}

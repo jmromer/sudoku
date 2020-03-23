@@ -1,25 +1,24 @@
-import React, { FC } from 'react'
+import React, { FC, Children } from 'react'
 
-import { Container, Row } from './styles'
-import Block from './block'
-
-import { FilledGrid } from 'utils/fill-grid'
-
-const array = React.Children.toArray
+import { Container, Row } from 'components/grid/styles'
+import Block from 'components/grid/block'
+import utils from 'utils'
 
 const Grid: FC = () => {
-    const grid = FilledGrid()
+    const grid = utils.sudoku.filled()
 
     return (
         <Container data-cy="grid-container">
             {
-                array(grid.map((row, rowIndex) => (
+                Children.toArray(grid.map((row, rowIndex) => (
                     <Row data-cy="grid-row-container">
                         {
-                            array(row.map((value, colIndex) =>
-                                <Block value={value}
+                            Children.toArray(row.map((value, colIndex) =>
+                                <Block
                                     row={rowIndex}
-                                    col={colIndex} />))
+                                    col={colIndex}
+                                    value={value}
+                                />))
                         }
                     </Row>
                 )))
@@ -27,5 +26,4 @@ const Grid: FC = () => {
         </Container>
     )
 }
-
-export default Grid;
+export default Grid

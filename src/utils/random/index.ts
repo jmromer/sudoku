@@ -7,7 +7,7 @@
  *
  * @return {Number} a random integer
  */
-export default function randomInt(bound1: number, bound2: number | null = null): number {
+function int(bound1: number, bound2: number | null = null): number {
     let [lb, ub] = (bound2) ? [bound1, bound2] : [0, bound1]
 
     if (ub <= lb) {
@@ -16,3 +16,5 @@ export default function randomInt(bound1: number, bound2: number | null = null):
 
     return Math.floor(lb + Math.random() * (ub - lb))
 }
+
+export default { int }
