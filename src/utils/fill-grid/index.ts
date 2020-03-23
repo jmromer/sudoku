@@ -2,6 +2,7 @@ import {
     COORD,
     GRID,
     INDEX,
+    ROW,
     SUDOKU_GRID_SIZE,
     VALUE
 } from 'typings'
@@ -151,4 +152,23 @@ export default function fillGrid(grid: GRID): boolean {
     // reset to 0 if we fail to populate [row, col]
     grid[row][col] = 0
     return false
+}
+
+
+/**
+ * Return a validly filled sudoku grid
+ *
+ * @returns {GRID}
+ */
+export function FilledGrid(): GRID {
+    const grid: GRID =
+        [...Array(SUDOKU_GRID_SIZE)].map(_ =>
+            [...Array(SUDOKU_GRID_SIZE)].map(_ =>
+                0 as VALUE
+            ) as ROW
+        ) as GRID
+
+    fillGrid(grid)
+
+    return grid
 }

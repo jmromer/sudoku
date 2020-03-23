@@ -3,24 +3,12 @@ import React, { FC } from 'react'
 import { Container, Row } from './styles'
 import Block from './block'
 
-import fillGrid from 'utils/fill-grid'
-import { GRID, VALUE, ROW } from 'typings'
-
-interface GridCallback {
-    (element: any, index: number): any
-}
+import { FilledGrid } from 'utils/fill-grid'
 
 const array = React.Children.toArray
 
 const Grid: FC = () => {
-    const grid: GRID =
-        [...Array(9)].map(_ =>
-            [...Array(9)].map(_ =>
-                0 as VALUE
-            ) as ROW
-        ) as GRID
-
-    fillGrid(grid)
+    const grid = FilledGrid()
 
     return (
         <Container data-cy="grid-container">
