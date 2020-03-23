@@ -133,17 +133,13 @@ export default function fillGrid(grid: GRID): boolean {
             shuffle(values)
 
             for (let value of values) {
-                if (!isInRow(value, grid, row)) {
-                    if (!isInCol(value, grid, col)) {
-                        if (!isInSubGrid(value, grid, row, col)) {
-                            grid[row][col] = value
+                if (isValidInPosition(value, grid, row, col)) {
+                    grid[row][col] = value
 
-                            if (isFullGrid(grid)) {
-                                return true
-                            } else if (fillGrid(grid)) {
-                                return true
-                            }
-                        }
+                    if (isFullGrid(grid)) {
+                        return true
+                    } else if (fillGrid(grid)) {
+                        return true
                     }
                 }
             }
