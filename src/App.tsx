@@ -1,8 +1,12 @@
 import React, { FC } from 'react';
 import { ThemeProvider } from 'styled-components'
+import { Provider } from 'react-redux'
 
 import { Content, Title, Card, Grid } from 'components'
 import { GlobalStyles, theme } from 'styles'
+import { configureStore } from 'core'
+
+const store = configureStore()
 
 // NB: <> is shorthand for <Fragment>
 const App: FC = () => (
