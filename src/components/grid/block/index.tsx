@@ -1,7 +1,10 @@
 import React, { FC } from 'react'
+import { useSelector } from 'react-redux'
+
+import { MainReducer } from 'reducers'
+import { VALUE } from 'typings'
 
 import { Container } from './styles'
-import { VALUE } from 'typings'
 
 interface BlockProps {
     col: number,
@@ -9,10 +12,18 @@ interface BlockProps {
     value: VALUE
 }
 
+interface BlockState {
+    value: VALUE
+}
+
 const Block: FC<BlockProps> = ({ row, col, value }) => {
+    const state = useSelector<MainReducer, BlockState>(({ grid }) =>
+        ({ value: grid ? grid[row][col] : 0 })
+    )
+
     return (
         <Container data-cy={`block-${row}-${col}`}>
-            {value}
+            {state.value === 0 ? '' : state.value}
         </Container>
     )
 }
