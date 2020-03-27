@@ -1,6 +1,6 @@
-import { GRID } from 'typings'
+import { COORD, GRID } from 'typings'
 
 export interface MainReducer {
     grid?: GRID,
-    selectedBlock?: any
+    selectedBlock?: COORD
 }

@@ -14,13 +14,19 @@ interface BlockProps {
 }
 
 interface BlockState {
-    value: VALUE
+    value: VALUE,
+    isActive: boolean
 }
 
 const Block: FC<BlockProps> = ({ row, col, value }) => {
-    const state = useSelector<MainReducer, BlockState>(({ grid }) =>
-        ({ value: grid ? grid[row][col] : 0 })
-    )
+    const state = useSelector<MainReducer, BlockState>(({ grid, selectedBlock }) => {
+        let [selRow, selCol] = selectedBlock || []
+
+        return {
+            value: grid ? grid[row][col] : 0,
+            isActive: (row === selRow && col === selCol)
+        }
+    })
 
     const dispatch = useDispatch<Dispatch<AnyAction>>()
 
@@ -31,6 +37,7 @@ const Block: FC<BlockProps> = ({ row, col, value }) => {
     return (
         <Container
             onClick={handleClick}
+            isActive={state.isActive}
             data-cy={`block-${row}-${col}`}>
             {state.value === 0 ? '' : state.value}
         </Container>
