@@ -31,6 +31,7 @@ const Block: FC<BlockProps> = ({ row, col, value }) => {
     const dispatch = useDispatch<Dispatch<AnyAction>>()
 
     function handleClick() {
+        if (state.isActive) { return }
         dispatch(selectBlock([row, col] as COORD))
     }
 
