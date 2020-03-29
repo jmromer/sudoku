@@ -6,7 +6,7 @@ import {
     VALUE
 } from 'typings'
 
-import utils from 'utils'
+import array from '../array'
 
 const GRID_SIZE = 9
 
@@ -95,18 +95,18 @@ function isValid(grid: GRID): boolean {
 
     for (let row of grid) {
         const rowEntries = row.slice(0).sort()
-        if (!utils.array.equal(rowEntries, completeEntries)) { return false }
+        if (!array.equal(rowEntries, completeEntries)) { return false }
     }
 
     for (let col = 0; col < GRID_SIZE; col++) {
         let colEntries = [...Array(GRID_SIZE)].map((_, row) => grid[row][col]).sort()
-        if (!utils.array.equal(colEntries, completeEntries)) { return false }
+        if (!array.equal(colEntries, completeEntries)) { return false }
     }
 
     const subgrids = allSubgridCoords()
     for (let subgrid of subgrids) {
         let subgridEntries = subgrid.map(([row, col]) => grid[row][col]).sort()
-        if (!utils.array.equal(subgridEntries, completeEntries)) { return false }
+        if (!array.equal(subgridEntries, completeEntries)) { return false }
     }
 
     return true
@@ -128,7 +128,7 @@ function fill(grid: GRID): boolean {
         col = i % GRID_SIZE as INDEX
 
         if (grid[row][col] === 0) {
-            utils.array.shuffle(values)
+            array.shuffle(values)
 
             for (let value of values) {
                 if (isValidInPosition(value, grid, [row, col])) {
@@ -175,9 +175,34 @@ function filled(): GRID {
     return grid
 }
 
+const delta: Record<string, number[]> = {
+    up: [-1, 0],
+    down: [1, 0],
+    left: [0, -1],
+    right: [0, 1]
+}
+
+function move(direction: string, origin: COORD): COORD {
+    const [row, col] = origin
+    const [rowDelta, colDelta] = delta[direction] || [0, 0]
+    const [targetRow, targetCol] = [row + rowDelta, col + colDelta] as COORD
+
+    if (
+        targetRow < 0 ||
+        targetCol < 0 ||
+        targetRow >= GRID_SIZE ||
+        targetCol >= GRID_SIZE
+    ) {
+        return origin
+    }
+
+    return [targetRow, targetCol]
+}
+
 export default {
+    empty,
     fill,
     filled,
-    empty,
     isValid,
+    move,
 }
